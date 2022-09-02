@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{% block title %} Склад: накладные {% endblock %}</h1>
+    {% for post in posts %}
+        <a href="{{ url_for('post', post_id=post['id_post']) }}">
+            <h2>{{ "Накладная №"+post['id_post']|string+" от "+post['note'].split('_')[2] }}</h2>
+        </a>
+        <span class="badge badge-primary">{{ post['getter'] }}</span>
+        {% if post['issued'] %}
+            <span style="background-color:#41cbea;" class="badge badge-primary">{{ post['date_time'] }}</span>
+            <span style="background-color:#41ea47;" class="badge badge-primary">Выдан</span>
+        {% else %}
+            <span style="background-color:#f1483b;" class="badge badge-primary">Не выдан</span>
+        {% endif %}
+        <hr>
+    {% endfor %}
+{% endblock %}

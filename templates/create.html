@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{% block title %} Создать новую накладную {% endblock %}</h1>
+
+<form method="post">
+    <div class="form-group">
+        <label for="getter">Компания</label>
+        <input type="text" name="getter"
+               placeholder="Напишите название компании" class="form-control"
+               value="{{ request.form['getter'] }}"></input>
+    </div>
+
+    <div class="form-group">
+        <label for="date">Дата (от)</label>
+        <input type="text" name="date"
+               class="form-control"
+               value="{{ request.form['date'] }}"></input>
+    </div>
+    <p>
+
+        <label for="good">Продукт</label>
+        <select name="comp_select">
+            {% for opt in goods_list %}
+            <option value="{{ opt }}">{{opt}}</option>
+            {% endfor %}
+        </select>
+<!--        <input name="good" list="character" readonly-->
+<!--               type="text" class="form-control" value="{{ request.form['good'] }}">-->
+<!--        <datalist id="character">-->
+<!--            {% for opt in goods_list %}-->
+<!--            <option value="{{ opt }}"></option>-->
+<!--            {% endfor %}-->
+<!--        </datalist>-->
+
+    <div class="form-group">
+        <input type="number" name="amount"
+               placeholder="Напишите количество" class="form-control"
+               value="{{ request.form['amount'] }}"></input>
+    </div>
+    </p>
+
+    {% for person in posts %}
+    <div>
+        <p>товар: {{person}}</p>
+    </div>
+    {% endfor %}
+
+
+    <input type="submit" name="submit_button" value="Add" class="btn btn-primary">
+
+    <input type="submit" name="submit_button" value="Create" class="btn btn-primary">
+
+</form>
+{% endblock %}

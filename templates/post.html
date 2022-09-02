@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>{% block title %} {{ post['getter'] }} {% endblock %}</h2>
+<span class="badge badge-primary">{{ post['note'] }}</span>
+
+<table class="table">
+    <tr>
+        {% for header in headings %}
+        <th>{{header}}</th>
+        {% endfor %}
+    </tr>
+
+    {% for good in goods %}
+    <TR style="counter-increment: rowNumber">
+        <TD>{{good.num}}</TD>
+        <TD>{{good.good}}</TD>
+        <TD>{{good.unit}}</TD>
+        <TD>{{good.amount}}</TD>
+    </TR>
+    {% endfor %}
+</table>
+<form method="post">
+    {% if post['issued'] %}
+    <span style="background-color:#41cbea;" class="badge badge-primary">{{ "Выдан: "+post['date_time'] }}</span>
+    {% else %}
+    <input type="submit" name="submit_button" value="Выдать" class="btn btn-primary">
+    {% endif %}
+</form>
+
+{% endblock %}
