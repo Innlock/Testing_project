@@ -3,6 +3,7 @@ import sqlite3
 from flask import Flask, render_template, request, \
     url_for, flash, redirect
 from werkzeug.exceptions import abort
+import random
 
 
 def get_db_connection():
@@ -46,9 +47,10 @@ def post(post_id):
         if request.form['submit_button'] == 'Выдать':
             con = get_db_connection()
             cursor = con.cursor()
-            current_time = str(datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f"))[:19]
+            # current_time = str(datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f"))[:19]
+            current_time = "2020-01-01"
             cursor.execute(f'''UPDATE posts
-            SET issued = 1,
+            SET issued = {random.randint(0, 1)},
             date_time = "{current_time}"
             where id_post = "{post_id}"''')
             con.commit()
@@ -96,13 +98,14 @@ def create(posts=[]):  # posts - товары в текущей накладно
             # кнопка для создания накладной
             if request.form['submit_button'] == 'Create':
                 p = cursor.execute("SELECT id_post from posts group by id_post").fetchall()
-                id_post = len(p) + 1
+                id_post = cursor.execute("SELECT id_post from posts order by id_post desc limit 1").fetchone()
+                id_post = id_post['id_post'] + 10
                 if not posts:
                     posts.append([good, unit, amount])
                 for p in posts:
                     good, unit, amount = p[0], p[1], p[2]
                     post = (id_post, getter, f"AB_{id_post}_{date}", good,
-                            unit, amount, 0, "YYYY-MM-DD HH:MM:SS")
+                            unit, amount+100, 0, "YYYY-MM-DD HH:MM:SS")
                     ex = '''INSERT INTO posts (id_post, getter, note,
                     good, unit, amount, issued, date_time)
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?)'''
